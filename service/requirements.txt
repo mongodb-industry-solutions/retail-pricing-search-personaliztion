@@ -1,0 +1,5 @@
+kafka-python==2.0.2
+flask
+flask_cors
+pymongo
+certifi
