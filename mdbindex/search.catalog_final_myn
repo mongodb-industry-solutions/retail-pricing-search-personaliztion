@@ -1,0 +1,92 @@
+{
+  "mappings": {
+    "fields": {
+      "articleType": [
+        {
+          "analyzer": "lucene.standard",
+          "type": "string"
+        },
+        {
+          "type": "stringFacet"
+        }
+      ],
+      "baseColour": [
+        {
+          "analyzer": "lucene.simple",
+          "type": "string"
+        },
+        {
+          "type": "stringFacet"
+        }
+      ],
+      "colour1": {
+        "analyzer": "lucene.simple",
+        "type": "string"
+      },
+      "gender": [
+        {
+          "analyzer": "lucene.simple",
+          "type": "string"
+        },
+        {
+          "type": "stringFacet"
+        }
+      ],
+      "masterCategory": [
+        {
+          "analyzer": "lucene.simple",
+          "type": "string"
+        },
+        {
+          "type": "stringFacet"
+        }
+      ],
+      "mfg_brand_name": [
+        {
+          "analyzer": "lucene.standard",
+          "type": "string"
+        },
+        {
+          "type": "stringFacet"
+        }
+      ],
+      "pred_price": [
+        {
+          "type": "sortableNumberBetaV1"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "price_elasticity": [
+        {
+          "type": "sortableNumberBetaV1"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "score": [
+        {
+          "type": "sortableNumberBetaV1"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "subCategory": [
+        {
+          "analyzer": "lucene.simple",
+          "type": "string"
+        },
+        {
+          "type": "stringFacet"
+        }
+      ],
+      "title": {
+        "analyzer": "lucene.standard",
+        "type": "string"
+      }
+    }
+  }
+}
