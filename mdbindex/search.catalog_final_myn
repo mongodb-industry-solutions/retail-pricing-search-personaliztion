@@ -74,6 +74,15 @@
           "type": "number"
         }
       ],
+      "season": [
+        {
+          "analyzer": "lucene.standard",
+          "type": "string"
+        },
+        {
+          "type": "stringFacet"
+        }
+      ],
       "subCategory": [
         {
           "analyzer": "lucene.simple",
@@ -86,7 +95,14 @@
       "title": {
         "analyzer": "lucene.standard",
         "type": "string"
-      }
+      },
+      "vec": [
+        {
+          "dimensions": 384,
+          "similarity": "cosine",
+          "type": "knnVector"
+        }
+      ]
     }
   }
 }
