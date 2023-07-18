@@ -28,12 +28,15 @@ const Form = () => {
   }
 
   const handleFormSubmit = (e) => {
-    e.preventDefault()
-    searchContext.setSearchQuery(searchInput)
-    navigate('/search')
-    setSearchInput('')
-    setSuggestions([])
-  }
+    e.preventDefault();
+    searchContext.setSearchQuery(searchInput);
+    const queryParams = new URLSearchParams();
+    queryParams.set('query', searchInput);
+    navigate(`/search?${queryParams.toString()}`);
+    setSearchInput('');
+    setSuggestions([]);
+  };
+  
 
   const handleSuggestionClick = (suggestion) => {
     setSearchInput(suggestion)

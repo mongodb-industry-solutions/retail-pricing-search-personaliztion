@@ -6,6 +6,11 @@ from kafka import KafkaConsumer, KafkaProducer
 from pymongo import MongoClient
 import certifi
 
+from sentence_transformers import SentenceTransformer, util
+
+# Load the model
+model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+
 
 app = Flask(__name__)
 CORS(app)
@@ -54,58 +59,77 @@ def q_obj(search_term):
         }
     ]
 
-def get_search_query(search_term):
-    return [
-            {
-                "$search": {
+def get_search_query(search_term,qvec,vs=False):
+    text_query ={"text": {
+                    "query": search_term,
+                    "path": {"wildcard":"*"},
+                    "score": { "boost": {"value": 3 }}
+                }}
+    vector_query ={"knnBeta": {
+                    "vector": qvec.tolist(),
+                    "path": "vec",
+                    "k": 100
+                }}
+
+    if vs:
+        search_query = {
+                    "$search": {
+                        "index": "default",
+                        "knnBeta": {
+                            "vector": qvec.tolist(),
+                            "path": "vec",
+                            "k": 100,
+                            "filter":{
+                                "compound":{
+                                    "must":[text_query]
+                                }
+                            }
+                        }
+                    }
+                }
+    else:
+        search_query = {
+            "$search": {
                 "index": "default",
                 "compound": {
-                    "must": [{
-                    "text": {
-                        "query": search_term,
-                        "path": {
-                        "wildcard":"*"
-                        },
-                        "score": { "boost": {"value": 3 }}
-                    }
-                    }]
-                },
-                "highlight": {
-                "path": {
-                    "wildcard": "*"
-                    }
-                }
-                }
-            },
-            { "$limit": 20 },
-            {"$project": {
-                    "_id":0,
-                    'irscore': {
-                        '$meta': 'textScore'
-                    },
-                    "title": 1,
-                    "id": 1,
-                    "mfg_brand_name": 1,
-                    "pred_price": 1,
-                    "price_elasticity": 1,
-                    "discountedPrice": 1,
-                    "link": 1,
-                    "atp": 1,
-                    "score": 1
-                }
-            },
-            {"$sort": {
-                    "irscore": -1,
-                    "score": -1,
-                    "price_elasticity": 1
+                    "must":[text_query]
                 }
             }
-        ]
+        }
+    
+    pipeline= [
+                search_query,
+                { "$limit": 20 },
+                {"$project": {
+                        "_id":0,
+                        'irscore': {
+                            '$meta': 'searchScore'
+                        },
+                        "title": 1,
+                        "id": 1,
+                        "mfg_brand_name": 1,
+                        "pred_price": 1,
+                        "price_elasticity": 1,
+                        "discountedPrice": 1,
+                        "link": 1,
+                        "atp": 1,
+                        "score": 1
+                    }
+                },
+                {"$sort": {
+                        "irscore": -1,
+                        "score": -1,
+                        "price_elasticity": 1
+                    }
+                }
+            ]
+    return pipeline
 
 def get_featured_items(limit):
     return [
             {"$match":{
-                "atp": 1
+                "atp": 1,
+                "articleType" : {"$in":["Tshirts", "Shirts", "Casual Shoes","Watches", "Handbags"]}
             }},
             {"$sort": {
                     "price_elasticity": 1,
@@ -130,6 +154,38 @@ def get_featured_items(limit):
             }
     ]
 
+@app.route('/retail/facet',methods=['GET', 'POST'])
+def facet_query():
+    search_term = request.args.get('query')
+    vector_search= request.args.get('vecSearch')
+    print(search_term)
+    qvec = model.encode(search_term)
+    text_query ={"text": {
+                    "query": search_term,
+                    "path": {"wildcard":"*"},
+                    "score": { "boost": {"value": 3 }}
+                }}
+    vector_query ={"knnBeta": {
+                    "vector": qvec.tolist(),
+                    "path": "vec",
+                    "k": 100
+                }}
+
+    if vector_search:
+        compound_query = {"must": [vector_query],"should":[text_query]}
+    else:
+        compound_query = {"must":[text_query]}
+    pipeline = [{"$searchMeta": { 
+                "index": "default",
+                "facet": {
+                    "operator":{"compound": compound_query,},
+                    "facets": {
+                    "mfg_brand_name": {"type": "string", "path": "mfg_brand_name"},
+                    "articleType": {"type": "string", "path": "articleType"},
+                    }}}}]
+    resp = client['search']['catalog_final_myn'].aggregate(pipeline)
+    x = list(resp)
+    return jsonify(x)
 
 def get_atp_prd_cnt(pid):
     db = client['search']
@@ -189,9 +245,11 @@ def autocomplete():
 def search():
     search_term = request.args.get('query')
     sort_opt = request.args.get('sortOpt')
+    vector_search= request.args.get('vecSearch')
 
-    # sort_query = {"$sort":{"score": -1}}    
-    search_query = get_search_query(search_term)
+    # sort_query = {"$sort":{"score": -1}}
+    qvec = query_vector = model.encode(search_term)
+    search_query = get_search_query(search_term,qvec,vs=vector_search)    
     # search_query += [sort_query]
     result = client['search']['catalog_final_myn'].aggregate(search_query)
     resp = list(result)
