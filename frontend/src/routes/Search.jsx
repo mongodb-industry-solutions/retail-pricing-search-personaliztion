@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import Search from "../components/Search";
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios'
@@ -17,10 +17,17 @@ const SearchView = () => {
     const searchQuery = {
         query: search.searchQuery
     }
-
+    src/routes/Search.jsx
     useEffect(() => {
-        setSearchParam(searchQuery, { replace: true })
-        var url = `${API_ENDPOINT}/retail/search?query=` + encodeURIComponent(search.searchQuery)
+        // TODO: Fix search param context
+        // setSearchParam(searchQuery, { replace: true })
+        const query = new URLSearchParams(window.location.search).get('query')
+        var url = `${API_ENDPOINT}/retail/search?query=` + encodeURIComponent(query)
+         // Check if vector search is enabled
+         const isVectorSearch = new URLSearchParams(window.location.search).get('vecSearch')
+         if (isVectorSearch) {
+             url += '&vecSearch=True'
+         }
         axios.get(url, {
             headers: {
               'Access-Control-Allow-Origin': '*'
