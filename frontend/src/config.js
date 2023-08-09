@@ -1,1 +1,1 @@
-export const API_ENDPOINT = 'http://192.168.0.132:3001';
+export const API_ENDPOINT = 'http://54.216.127.120:8888';
