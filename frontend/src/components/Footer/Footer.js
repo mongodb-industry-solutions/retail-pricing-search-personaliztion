@@ -73,9 +73,7 @@ const Footer = () => {
                 </div>
                 <div className="fotter__copyright__container">
                     <ul className='nav'>
-                        <li className="footer__copyright">©2023 Leafy Ltd. |</li>
-                        <li className="footer__terms__condition"> | Terms & Condition |</li>
-                        <li className="footer__privacy__policy">| Privacy Policy</li>
+                    <li className="footer__copyright">Leafyy made with 💛 by <a href="https://www.linkedin.com/in/vittalpai/" target="_blank" rel="noopener noreferrer">Vittal Pai</a> & <a href="https://www.linkedin.com/in/ashwin-gangadhar-00b17046/" target="_blank" rel="noopener noreferrer">Ashwin Gangadhar</a></li>
                     </ul>
                      </div>
             </div>
