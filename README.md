@@ -6,6 +6,9 @@ In this repository we have demostrated the capabilities to store real time inter
 
 These modeled features are then used to power the sorting and ranking functionalities on the discoverabiltiy front of these products.
 
+### Live Demo
+http://go/retail-demo
+
 ### Architecture 
 <img width="1957" alt="image" src="images/retail_Arch.png">
 
