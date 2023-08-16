@@ -17,11 +17,11 @@ const SearchView = () => {
     const searchQuery = {
         query: search.searchQuery
     }
+    const query = new URLSearchParams(window.location.search).get('query')
 
     useEffect(() => {
         // TODO: Fix search param context
         //  setSearchParam(searchQuery, { replace: true })
-        const query = new URLSearchParams(window.location.search).get('query')
         var url = `${API_ENDPOINT}/retail/search?query=` + encodeURIComponent(query)
          // Check if vector search is enabled
          const isVectorSearch = new URLSearchParams(window.location.search).get('vecSearch')
@@ -46,7 +46,7 @@ const SearchView = () => {
         <div className='d-flex min-vh-100 w-100 justify-content-center align-items-center m-auto'>
             {loading && <ReactLoading type="balls" color='#dbf3dd' height={100} width={100} className='m-auto'/>}
             { ( !items || typeof items === 'undefined' || items.length == 0) && !loading &&<Search/>}
-            { typeof items != 'undefined' && items.length >0 && !loading && <Category name="Search Results" items={items} category="men"/>}
+            { typeof items != 'undefined' && items.length >0 && !loading && <Category name={`Search results for ${query}`} items={items} category="men"/>}
           
         </div>
         

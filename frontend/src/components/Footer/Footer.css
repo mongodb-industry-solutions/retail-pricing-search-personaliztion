@@ -135,3 +135,7 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
+
+.fotter__copyright__container a {
+    color: #dbf3dd; 
+}
