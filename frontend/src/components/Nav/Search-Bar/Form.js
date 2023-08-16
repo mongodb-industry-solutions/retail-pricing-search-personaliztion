@@ -10,6 +10,7 @@ const Form = () => {
   const [searchInput, setSearchInput] = useState('')
   const [suggestions, setSuggestions] = useState([])
   const searchContext = useContext(SearchContext)
+  const [vectorSearch, setVectorSearch] = useState(false);
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -32,16 +33,23 @@ const Form = () => {
     searchContext.setSearchQuery(searchInput);
     const queryParams = new URLSearchParams();
     queryParams.set('query', searchInput);
+    if (vectorSearch) {
+      queryParams.set('vecSearch', 'True');
+    }
     navigate(`/search?${queryParams.toString()}`);
     setSearchInput('');
     setSuggestions([]);
+    window.location.reload();
   };
   
-
   const handleSuggestionClick = (suggestion) => {
     setSearchInput(suggestion)
     setSuggestions([])
   }
+
+  const toggleVectorSearch = () => {
+    setVectorSearch(prevState => !prevState);
+  };
 
   return (
     <form className="search__form" onSubmit={handleFormSubmit}>
@@ -60,6 +68,15 @@ const Form = () => {
       <button className="search__form__button" type='submit'>
         <SearchIcon fontSize='medium' />
       </button>
+      <label className="vector-search__label">
+          <input
+            type="checkbox"
+            className="vector-search__checkbox"
+            checked={vectorSearch}
+            onChange={toggleVectorSearch}
+          />
+          Vector Search
+        </label>
     </form>
   );
 }
