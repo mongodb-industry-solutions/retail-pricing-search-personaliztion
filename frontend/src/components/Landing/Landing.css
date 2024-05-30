@@ -42,6 +42,7 @@
 .landing__header__main {
     font-size: 4.0rem;
     font-weight: 800;
+    z-index: 1000;
 }
 
 .landing__header__discount {
