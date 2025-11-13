@@ -1,0 +1,139 @@
+###############################################################
+#                RETAIL PRICING SEARCH PERSONALIZATION
+#               SECURITY-ALIGNED .gitignore (IST 2025)
+###############################################################
+
+###############################
+# 🧪 JUPYTER NOTEBOOKS
+###############################
+.ipynb_checkpoints/
+.notebooks/
+**/.ipynb_checkpoints/
+*.ipynb~
+
+###############################
+# 🐍 PYTHON (Backend: service/)
+###############################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyd
+*.db
+*.sqlite3
+
+# Bytecode
+*.pyc
+
+# Virtual env
+.env
+ env/
+.env/
+.env.*
+.venv/
+.venv
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Python packaging / build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+###############################
+# 🔐 SECURITY & CREDENTIALS
+###############################
+# Absolutely no credentials should ever be committed
+.env
+*.env
+*.env.local
+*.env.production
+*.env.development
+*.env.test
+
+# Secrets & sensitive dirs
+secrets/
+credentials/
+*.secrets
+*.key
+*.pem
+*.crt
+
+# Kafka connector configs with sensitive fields
+kafka/*.properties
+kafka/*.json
+kafka/**/*.properties
+kafka/**/*.json
+
+# Kingfisher / security scripts logs
+kingfisher.log
+security_check.sh
+
+###############################
+# 🖼️ IMAGES DIRECTORY
+###############################
+images/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.webp
+
+###############################
+# 🧹 LOGS & DEBUG FILES
+###############################
+*.log
+logs/
+debug.log
+
+###############################
+# 📦 NODE / FRONTEND (frontend/)
+###############################
+# Node modules
+node_modules/
+frontend/node_modules/
+
+# Lock files (optional; keep if needed)
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Build artifacts
+frontend/build/
+frontend/dist/
+build/
+dist/
+
+# Config overrides
+frontend/.env
+frontend/.env.*
+frontend/*.local
+
+###############################
+# ⚙️ JAVA / OTHER (Kafka tools)
+###############################
+*.class
+*.jar
+*.war
+*.ear
+
+###############################
+# 📝 EDITORS / OS ARTIFACTS
+###############################
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+###############################
+# ☁️ DOCKER (if added later)
+###############################
+docker-compose.override.yml
+*.pid

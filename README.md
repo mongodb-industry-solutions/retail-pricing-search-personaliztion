@@ -77,3 +77,5 @@ Before running the app, you'll need to have the following installed on your syst
 ```bash
 npm start
 ```
+📘 Learn more: Check out the official MongoDB blog post “Fusing MongoDB and Databricks to Deliver AI-Augmented Search” for a deeper look at the architecture and concepts behind this project:
+https://www.mongodb.com/company/blog/fusing-mongodb-databricks-deliver-ai-augmented-search

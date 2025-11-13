@@ -22,8 +22,8 @@ producer = KafkaProducer(
     api_version = (0, 11, 15)
 )
 
-# init mongo connection client
-MONGO_CONN = 'mongodb+srv://<username>:<password>@retail-demo.2wqno.mongodb.net/?retryWrites=true&w=majority'
+# init mongo connection client https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/
+MONGO_CONN = ''
 client = MongoClient(MONGO_CONN, tlsCAFile=certifi.where())
 
 def q_obj(search_term):
